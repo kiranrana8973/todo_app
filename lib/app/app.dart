@@ -7,11 +7,19 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Riverpod Todo App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const Scaffold(
+        // appBar: AppBar(
+        //   title: const Text('Riverpod Todo App'),
+        // ),
+        body: SafeArea(
+          child: HomeScreen(),
+        ),
+      ),
     );
   }
 }
