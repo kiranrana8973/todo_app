@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       ),
       home: const Scaffold(
         // appBar: AppBar(
-        //   title: const Text('Riverpod Todo App'),
+        //   title: const Text('Riverpod Todo Aspp'),
         // ),
         body: SafeArea(
           child: HomeScreen(),

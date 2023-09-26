@@ -1,5 +1,7 @@
+import 'package:todo_app/domain/entity/todo_entity.dart';
+
 class TodoModel {
-  final String id;
+  final int id;
   final String title;
   final String description;
   final bool isCompleted;
@@ -31,5 +33,16 @@ class TodoModel {
       'isCompleted': isCompleted,
       'isPinned': isPinned,
     };
+  }
+
+  // Convert this class to toEntity
+  TodoEntity toEntity() {
+    return TodoEntity(
+      id: id,
+      title: title,
+      description: description,
+      isCompleted: isCompleted,
+      isPinned: isPinned,
+    );
   }
 }
