@@ -13,7 +13,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with TickerProviderStateMixin {
   late final TabController _tabController;
-
   @override
   void initState() {
     super.initState();
@@ -109,14 +108,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           Tab(text: 'Done'),
                         ],
                       ),
+                      const SizedBox(height: 10),
                       Expanded(
                         child: TabBarView(
                           controller: _tabController,
-                          children: const [
-                            Text('All'),
-                            Text('Active'),
-                            Text('Favourite'),
-                            Text('Done'),
+                          children: [
+                            ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 10),
+                              itemCount: todos.todos.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  height: 70,
+                                  child: InkWell(
+                                    onTap: () {
+                                      ref
+                                          .read(todoControllerProvider.notifier)
+                                          .updateTodo(todos.todos[index]);
+                                    },
+                                    child: ListTile(
+                                      leading: Radio(
+                                        value: todos.todos[index].isCompleted,
+                                        groupValue: true,
+                                        onChanged: (value) {},
+                                      ),
+                                      title: Text(todos.todos[index].title),
+                                      trailing: IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.star,
+                                            color: todos.todos[index].isPinned
+                                                ? Colors.yellow
+                                                : Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            const Center(child: Text('Active')),
+                            const Center(child: Text('Favourite')),
+                            const Center(child: Text('Done')),
                           ],
                         ),
                       ),

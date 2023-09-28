@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app/domain/entity/todo_entity.dart';
 import 'package:todo_app/domain/usecase/get_all_todos_usecase.dart';
 import 'package:todo_app/presentation/state/todo_state.dart';
 
@@ -24,5 +25,19 @@ class TodoController extends StateNotifier<TodoState> {
       return state = state.copyWith(todos: r);
     });
     state = state.copyWith(isLoading: false);
+  }
+
+  // update todo
+  void updateTodo(TodoEntity todo) {
+    int todoId = todo.id;
+
+    // search for the todo and update the isCompleted field
+    var todoIndex = state.todos.indexWhere((element) => element.id == todoId);
+    var todoToUpdate = state.todos[todoIndex];
+    todoToUpdate = todoToUpdate.copyWith(isCompleted: !todo.isCompleted);
+
+    // update the state
+    state.todos[todoIndex] = todoToUpdate;
+    state = state.copyWith(todos: state.todos);
   }
 }
