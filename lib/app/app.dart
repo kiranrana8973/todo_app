@@ -12,11 +12,12 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Scaffold(
+      home: Scaffold(
+        backgroundColor: Colors.grey[100],
         // appBar: AppBar(
         //   title: const Text('Riverpod Todo Aspp'),
         // ),
-        body: SafeArea(
+        body: const SafeArea(
           child: HomeScreen(),
         ),
       ),
