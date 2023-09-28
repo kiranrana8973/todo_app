@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app/core/providers/remainng_todo_provider.dart';
 import 'package:todo_app/presentation/controller/todo_controller.dart';
 import 'package:todo_app/presentation/widgets/header_widget.dart';
 
@@ -72,20 +73,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       Align(
                         alignment: Alignment.center,
                         child: RichText(
-                          text: const TextSpan(
-                            text: '6 of ',
-                            style: TextStyle(
+                          text: TextSpan(
+                            text: '${ref.watch(remianingTodoProvider)} of ',
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 18,
                             ),
                             children: [
                               TextSpan(
-                                text: '12',
-                                style: TextStyle(
+                                // Display total no of todos
+                                text: ref
+                                    .watch(todoControllerProvider)
+                                    .todos
+                                    .length
+                                    .toString(),
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              TextSpan(
+                              const TextSpan(
                                 text: ' tasks completed',
                                 style: TextStyle(),
                               )
