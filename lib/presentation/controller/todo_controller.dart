@@ -40,4 +40,17 @@ class TodoController extends StateNotifier<TodoState> {
     state.todos[todoIndex] = todoToUpdate;
     state = state.copyWith(todos: state.todos);
   }
+
+  void updatePinned(TodoEntity todo) {
+    int todoId = todo.id;
+
+    // search for the todo and update the isPinned field
+    var todoIndex = state.todos.indexWhere((element) => element.id == todoId);
+    var todoToUpdate = state.todos[todoIndex];
+    todoToUpdate = todoToUpdate.copyWith(isPinned: !todo.isPinned);
+
+    // update the state
+    state.todos[todoIndex] = todoToUpdate;
+    state = state.copyWith(todos: state.todos);
+  }
 }

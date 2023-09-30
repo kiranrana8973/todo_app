@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/core/providers/remainng_todo_provider.dart';
 import 'package:todo_app/presentation/controller/todo_controller.dart';
+import 'package:todo_app/presentation/state/todo_state.dart';
 import 'package:todo_app/presentation/widgets/header_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -119,45 +120,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 10),
-                              itemCount: todos.todos.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  height: 70,
-                                  child: InkWell(
-                                    onTap: () {
-                                      ref
-                                          .read(todoControllerProvider.notifier)
-                                          .updateTodo(todos.todos[index]);
-                                    },
-                                    child: ListTile(
-                                      leading: Radio(
-                                        value: todos.todos[index].isCompleted,
-                                        groupValue: true,
-                                        onChanged: (value) {},
-                                      ),
-                                      title: Text(todos.todos[index].title),
-                                      trailing: IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.star,
-                                            color: todos.todos[index].isPinned
-                                                ? Colors.yellow
-                                                : Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            const Center(child: Text('Active')),
-                            const Center(child: Text('Favourite')),
-                            const Center(child: Text('Done')),
+                            AllTodo(todos: todos, ref: ref),
+                            ActiveTodo(ref: ref),
+                            FavouriteTodo(ref: ref),
+                            DoneTodo(ref: ref),
                           ],
                         ),
                       ),
@@ -170,6 +136,210 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         ),
       );
     }
+  }
+}
+
+class DoneTodo extends StatelessWidget {
+  const DoneTodo({super.key, required this.ref});
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final todos = ref.watch(completedTodoProvider);
+    return ListView.separated(
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
+      itemCount: todos.todos.length,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          height: 70,
+          child: InkWell(
+            onTap: () {
+              ref
+                  .read(todoControllerProvider.notifier)
+                  .updateTodo(todos.todos[index]);
+            },
+            child: ListTile(
+              leading: Radio(
+                value: todos.todos[index].isCompleted,
+                groupValue: true,
+                onChanged: (value) {},
+              ),
+              title: Text(todos.todos[index].title),
+              trailing: IconButton(
+                onPressed: () {
+                  ref
+                      .read(todoControllerProvider.notifier)
+                      .updatePinned(todos.todos[index]);
+                },
+                icon: Icon(Icons.star,
+                    color: todos.todos[index].isPinned
+                        ? Colors.yellow
+                        : Colors.white),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class FavouriteTodo extends StatelessWidget {
+  const FavouriteTodo({super.key, required this.ref});
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final todos = ref.watch(pinnedTodoProvider);
+    return ListView.separated(
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
+      itemCount: todos.todos.length,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          height: 70,
+          child: InkWell(
+            onTap: () {
+              ref
+                  .read(todoControllerProvider.notifier)
+                  .updateTodo(todos.todos[index]);
+            },
+            child: ListTile(
+              leading: Radio(
+                value: todos.todos[index].isCompleted,
+                groupValue: true,
+                onChanged: (value) {},
+              ),
+              title: Text(todos.todos[index].title),
+              trailing: IconButton(
+                onPressed: () {
+                  ref
+                      .read(todoControllerProvider.notifier)
+                      .updatePinned(todos.todos[index]);
+                },
+                icon: Icon(Icons.star,
+                    color: todos.todos[index].isPinned
+                        ? Colors.yellow
+                        : Colors.white),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ActiveTodo extends StatelessWidget {
+  const ActiveTodo({super.key, required this.ref});
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final todos = ref.watch(activeTodoProvider);
+    return ListView.separated(
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
+      itemCount: todos.todos.length,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          height: 70,
+          child: InkWell(
+            onTap: () {
+              ref
+                  .read(todoControllerProvider.notifier)
+                  .updateTodo(todos.todos[index]);
+            },
+            child: ListTile(
+              leading: Radio(
+                value: todos.todos[index].isCompleted,
+                groupValue: true,
+                onChanged: (value) {},
+              ),
+              title: Text(todos.todos[index].title),
+              trailing: IconButton(
+                onPressed: () {
+                  ref
+                      .read(todoControllerProvider.notifier)
+                      .updatePinned(todos.todos[index]);
+                },
+                icon: Icon(Icons.star,
+                    color: todos.todos[index].isPinned
+                        ? Colors.yellow
+                        : Colors.white),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class AllTodo extends StatelessWidget {
+  const AllTodo({
+    super.key,
+    required this.todos,
+    required this.ref,
+  });
+
+  final TodoState todos;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
+      itemCount: todos.todos.length,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          height: 70,
+          child: InkWell(
+            onTap: () {
+              ref
+                  .read(todoControllerProvider.notifier)
+                  .updateTodo(todos.todos[index]);
+            },
+            child: ListTile(
+              leading: Radio(
+                value: todos.todos[index].isCompleted,
+                groupValue: true,
+                onChanged: (value) {},
+              ),
+              title: Text(todos.todos[index].title),
+              trailing: IconButton(
+                onPressed: () {
+                  ref
+                      .read(todoControllerProvider.notifier)
+                      .updatePinned(todos.todos[index]);
+                },
+                icon: Icon(Icons.star,
+                    color: todos.todos[index].isPinned
+                        ? Colors.yellow
+                        : Colors.white),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
