@@ -8,6 +8,11 @@ final remianingTodoProvider = StateProvider<int>((ref) {
   return remainingTodos.length;
 });
 
+final allTodoProvider = StateProvider<TodoState>((ref) {
+  final todos = ref.watch(todoControllerProvider).todos;
+  return TodoState.initial().copyWith(todos: todos);
+});
+
 final pinnedTodoProvider = StateProvider<TodoState>((ref) {
   final todos = ref.watch(todoControllerProvider).todos;
   var pinnedTodos = todos.where((element) => element.isPinned).toList();
